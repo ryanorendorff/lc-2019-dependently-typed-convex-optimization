@@ -1,0 +1,40 @@
+# Haskell
+.cabal-sandbox/
+cabal.sandbox.config
+dist/
+dist-newstyle
+.ghc.environment.*
+*.hi
+*.o
+.hsenv*
+TAGS
+
+# Tex related
+*.tex
+*.aux
+*.bbl
+*.ptb
+*.pdf
+*.toc
+*.out
+*.run.xml
+*.blg
+*.bcf
+*.log
+*.nav
+*.snm
+*.vrb
+_minted*
+*.pyg
+
+# nix
+result
+
+# direnv. Ignored so that the user can choose what to use instead.
+.envrc
+
+# Mac
+.DS_Store
+
+# Editor files
+*.swp
