@@ -1,6 +1,9 @@
 # Jupyter notebooks
 .ipynb_checkpoints/
 
+# Emacs
+*.el
+
 # Haskell
 .cabal-sandbox/
 cabal.sandbox.config
