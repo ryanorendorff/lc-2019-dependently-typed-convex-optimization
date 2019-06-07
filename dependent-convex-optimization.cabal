@@ -1,4 +1,4 @@
-cabal-version:       2.4
+cabal-version:       2.2
 
 name:                dependently-typed-convex-optimization
 version:             0.1.0.0
@@ -19,6 +19,9 @@ library
   -- Modules exported by the library.
   exposed-modules:
     Numeric.LinearAlgebra.MatrixFree
+    Numeric.LinearProgramming.L1.Static
+    ControlSystems.DynamicSystems.Conversions
+    ControlSystems.DynamicSystems.Conversions.Static
 
   -- Modules included in this library but not exported.
   -- other-modules:
@@ -33,7 +36,9 @@ library
     , gnuplot
     , hmatrix
     , hmatrix-glpk
-    , base ^>=4.12.0.0
+    , vector
+    , random
+    , base >=4.10.1.0
                 
 
   -- Directories containing source files.
@@ -67,8 +72,10 @@ executable dependently-typed-convex-optimization
     , gnuplot
     , hmatrix
     , hmatrix-glpk
+    , vector
+    , random
     , dependently-typed-convex-optimization
-    , base ^>=4.12.0.0
+    , base >=4.10.1.0
 
   -- Directories containing source files.
   hs-source-dirs:      main
