@@ -1,4 +1,4 @@
-{ pkgs ? import ./nixpkgs.nix, installOnly ? true }:
+{ pkgs ? import ./nix/nixpkgs.nix, installOnly ? true }:
 
 let
 

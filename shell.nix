@@ -1,10 +1,10 @@
-{ pkgs ? import ./nixpkgs.nix }:
+{ pkgs ? import ./nix/nixpkgs.nix }:
 
 let
 
   inherit pkgs;
 
-  dependent-pkgs = import ./. {inherit pkgs; installOnly = false;};
+  dependent-pkgs = import ./default.nix {inherit pkgs; installOnly = false;};
 
   # Generate the hoogle database for all packages listed in the cabal file.
   hoogle-path = pkgs.path + "/pkgs/development/haskell-modules/hoogle.nix";
@@ -28,6 +28,7 @@ let
     cm-super
     cmll
     ec
+    footmisc
     framed
     fvextra
     ifplatform
