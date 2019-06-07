@@ -446,7 +446,7 @@ Let's try to see what happens when we measure different powers!
 \end{frame}
 
 
-\begin{frame}{HMatrix uses phantom types to wrap up vectors with their shape}
+\begin{frame}{HMatrix uses phantom types to add shape to vectors}
 
   HMatrix uses a phantom type-level natural number to encode the length of the
   vector.
@@ -473,7 +473,7 @@ Let's try to see what happens when we measure different powers!
   \pause
 
   HMatrix gets around this by using smart constructors. This is not the perfect
-  encoding but allows all previously defined functions linear algebra to be
+  encoding\footnote{\url{https://serokell.io/blog/dimensions-and-haskell-introduction}} but allows all previously defined functions linear algebra to be
   used easily.
 
 \end{frame}
@@ -500,7 +500,7 @@ Let's try to see what happens when we measure different powers!
 \end{frame}
 
 
-\begin{frame}{Making a simple 2x2 matrix}
+\begin{frame}{Example size safe operation: making a simple 2x2 matrix}
 
   Let's use the concatenation operations to make a safe 2x2 matrix.
 
@@ -580,7 +580,7 @@ Let's try to see what happens when we measure different powers!
 
   What did we gain from this example?
 
-  \begin{itemize}
+  \begin{itemize}[<+->]
     \item We started with a way to solve a numeric problem that was mathematically correct,
     \item found out our function was partial,
     \item and then made the function more robust by representing the shapes of our data in the type.
@@ -588,7 +588,7 @@ Let's try to see what happens when we measure different powers!
 
 \end{frame}
 
-\section{What other kinds of problems can we solve?}
+\section{Solving problems by constraining our model}
 
 \begin{frame}{Proximal optimization problems}
 
@@ -600,7 +600,7 @@ Let's try to see what happens when we measure different powers!
 
   where
 
-  \begin{itemize}
+  \begin{itemize}[<+->]
     \item $F$ is the cost function from $\mathbb{R}^n \rightarrow \mathbb{R}$
     \item $f$ is a smooth convex function with a bounded derivative.
     \item $g$ is a (potentially non-smooth) convex function.
@@ -621,7 +621,7 @@ Let's try to see what happens when we measure different powers!
 
   where
 
-  \begin{itemize}
+  \begin{itemize}[<+->]
     \item $||||Sp-m||||_2^2$ is the data consistency term,
     \item $||||p||||_1$ says that our signal should be sparse (have few non-zero components)
     \item $\lambda$ trades off which we care about more: data consistency or sparsity.
@@ -685,7 +685,7 @@ The types make sure our functions are correct in terms of size.
 
 \begin{frame}{The $g$ function}
 
-  Our function $g$ and its proximal operator $prox(g)$ are defined as
+  Our function $g$ and its proximal operator $prox_g$ are defined as
 
   \begin{align*}
     g & = \lambda ||||x||||_1 \\
@@ -721,7 +721,7 @@ In Haskell we can write this as
 > -- Solve problems like $\mathrm{min}\ ||||Ax - b||||_2 + \lambda ||||x||||_1$
 > fista :: (KnownNat n, 1 <= n) =>
 >          (R n -> R n)     --  $\nabla f$: gradient of f
->      ->  (R n -> R n)     --  $prox(g)$: proximal operator of g
+>      ->  (R n -> R n)     --  $prox_g$: proximal operator of g
 >      ->  Double           --  $l$: Lipschitz constant
 >      ->  Maybe (R n)      --  Initial guess at a solution
 >      ->  [R n]            --  Iterative solutions
@@ -1032,7 +1032,7 @@ In Haskell we can write this as
 %format a_a
 %format a_b
 
-\begin{frame}{Combine matrixes using the definition of linearity: scale}
+\begin{frame}{Combine matrices using the definition of linearity: scale}
 
   Linear operations can be multiplied by a constant. We can either multiply the
   elements of the matrix by this constant, or equivalently scale the resulting
@@ -1201,7 +1201,8 @@ In Haskell we can write this as
 
 \begin{frame}{$D$ operator: each panel loses its average value}
   Due to the physics of our imaging, we lose the average value in each panel. We
-  can represent this in 1D as the signal shifting to center around zero. This is just |removeAvg|!
+  can represent this in 1D as the signal shifting to center around zero. This is
+  just |removeAvg| ($I - M$)!
 
   \centering
   \includegraphics[width=\textwidth]{fig/lc-logo-dc-removal}
@@ -1209,6 +1210,20 @@ In Haskell we can write this as
 % > dc_removal :: (KnownNat n) => LinearOperator n n
 % > dc_removal
 
+\end{frame}
+
+\begin{frame}{MPI forward model is just the composition of S and D}
+
+  Our model for MPI is just
+
+  \begin{equation*}
+    A = DS
+  \end{equation*}
+
+  which can be written in Haskell as
+
+< a = removeAvg <#> imagePatch
+  
 \end{frame}
 
 \begin{frame}{We can image interesting geometries like the LC logo}
@@ -1227,8 +1242,8 @@ In Haskell we can write this as
 
 \begin{frame}[t]{Matrix free makes untenable problems possible}
 
-  We are also using the same sparse idea to descrease our 3D imaging time by
-  40\%.
+  We are also using the same sparse idea to decrease the number of samples of an
+  object we need to take by 40\%.
 
   \begin{center}
     \includegraphics<1>[width=\textwidth]{fig/radon-full.png}
