@@ -284,7 +284,7 @@
     % I think we need to double these up because of lhs2TeX interpreting them
     % as the inline code environment.
     \text{minimize}\ & ||||Sp - m||||_2 \\
-    \text{subject to}\ & x \in \mathbb{R}^n
+    \text{subject to}\ & p \in \mathbb{R}^n
   \end{align*}
 
   \pause
